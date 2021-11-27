@@ -13,7 +13,7 @@
           <div class="text-right">{{ candidate.name }}</div>
           <div>
             <button class="btn btn-outline-light"
-                    :class="{selected: selected == candidate.id}"
+                    :class="{selected: isSelected(candidate.id)}"
                     @click="vote(candidate.id)">VOTE
             </button>
           </div>
@@ -66,18 +66,26 @@ export default {
       ready: false,
       addCandidate: false,
       candidateAdded: false,
-      selected: '',
+      selected: [],
       candidateName: '',
     }
   },
   created() {
     this.loadCandidates();
-    this.selected = localStorage.getItem(`selected-${window.currentUser.accountId}`);
+    const key = `selected-${window.currentUser.accountId}`;
+    if (localStorage.getItem(key)) {
+      this.selected = JSON.parse(localStorage.getItem(key));
+    }
   },
   methods: {
     signOut() {
       window.wallet.signOut();
       window.location.replace(window.location.origin + window.location.pathname);
+    },
+    isSelected(id) {
+      if (this.selected.length) {
+        return this.selected.indexOf(id) != -1;
+      }
     },
     addCandidateShow() {
       this.addCandidate = true;
@@ -112,16 +120,14 @@ export default {
       });
     },
     async vote(id) {
-      const selected = localStorage.getItem(`selected-${window.currentUser.accountId}`);
-      if (!selected) {
-        localStorage.setItem(`selected-${window.currentUser.accountId}`, id);
-        this.selected = id;
-      }
+      this.selected.push(id);
+      localStorage.setItem(`selected-${window.currentUser.accountId}`, JSON.stringify(this.selected));
 
       window.contract.vote({
         id: id,
       }).then(result => {
         console.log(result);
+        this.loadCandidates();
       }).catch(err => {
         let text = err.kind.ExecutionError.split(', filename');
         alert(text[0]);

@@ -36,8 +36,8 @@
           <button @click="addCandidate = false" class="btn btn-link">&laquo; back</button>
         </div>
 
-        <div class="mt-4 mb-4" v-if="candidateAdded">
-          Candidate Successfully Added!
+        <div class="mt-4 mb-4 text-center" v-if="candidateAdded">
+          <b>Candidate Successfully Added!</b>
         </div>
       </div>
     </section>

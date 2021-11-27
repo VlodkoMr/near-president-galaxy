@@ -1,3 +1,3 @@
 module.exports = {
-    publicPath: "/near-voting/"
+    publicPath: "/near-president-galaxy/"
 }

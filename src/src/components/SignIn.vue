@@ -5,7 +5,7 @@
       <p style="color: #FFF; font-size: 70%;">Today, you can choose a new Emperor of the Galaxy!</p>
     </section>
     <section class="logo">
-      <img src="/logo.png" alt="">
+      <img src="logo.png" alt="">
     </section>
     <div id="board">
       <div id="content">
